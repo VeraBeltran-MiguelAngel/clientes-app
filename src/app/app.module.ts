@@ -5,13 +5,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component'; //añadimos el nuevo componente 
 import { FooterComponent } from './footer/footer.component';
+import { DirectivaComponent } from './directiva/directiva.component';
 
 @NgModule({
   //siempre se deben poner los nuevo componentes aqui 
   declarations: [
     AppComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    DirectivaComponent
   ],
   imports: [
     BrowserModule,
