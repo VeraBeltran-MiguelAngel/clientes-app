@@ -1,6 +1,12 @@
+<!--mandamos a llamar la funcion en el evento click, esta declarada en directiva.c.ts-->
+<button type="button" (click)="setHabilitar()" class="btn btn-primary my-3">
+  <!--evaluamos si habilitar esta en true muestra el texto Ocultar en el boton-->
+  {{ habilitar == true ? "Ocultar" : "Mostrar" }}
+</button>
 <div class="card">
   <div class="card-header">Listado de cursos</div>
-  <ul class="list-group">
+  <!--si la variable habilitar es true muestra los cursos-->
+  <ul class="list-group" *ngIf="habilitar == true">
     <!--aqui estamos itenado los elementos del arreglo "listaCurso"-->
     <li class="list-group-item" *ngFor="let curso of listaCurso">
       <!--imprimimos variable-->
