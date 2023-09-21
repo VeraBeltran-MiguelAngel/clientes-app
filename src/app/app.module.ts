@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component'; //añadimos el nuevo componente 
 import { FooterComponent } from './footer/footer.component';
 import { DirectivaComponent } from './directiva/directiva.component';
+import { ClientesComponent } from './clientes/clientes.component';
 
 @NgModule({
   //siempre se deben poner los nuevo componentes aqui 
@@ -13,7 +14,8 @@ import { DirectivaComponent } from './directiva/directiva.component';
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    DirectivaComponent
+    DirectivaComponent,
+    ClientesComponent
   ],
   imports: [
     BrowserModule,
