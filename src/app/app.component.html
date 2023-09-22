@@ -2,12 +2,9 @@
 <app-header></app-header>
 
 <div class="container">
-  <!--Contenido-->
-  <h1>
-    {{ title }}
-  </h1>
-  <!--insertamos el componente clientes-->
-  <app-clientes></app-clientes>
+  <!--Directiva especial de angular para cargar las rutas
+  Indica donde se va a renderizar y mostrar el contenidode cada ruta-->
+  <router-outlet></router-outlet>
 </div>
 
 <app-footer></app-footer>
