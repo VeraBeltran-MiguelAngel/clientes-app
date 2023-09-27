@@ -11,6 +11,11 @@ import { ClientesComponent } from './clientes/clientes.component';
 import { ClienteService } from './clientes/cliente.service';
 //para poder ligar nuestras rutas de paginas
 import { RouterModule, Routes } from '@angular/router';
+/**
+ * 1° importar componente de angular para la comunicación con el servidor
+ * remoto a traves de peticiones HTTP (get,post,delete,put)
+ */
+import { HttpClientModule } from '@angular/common/http';
 
 /* constante que contiene un arreglo con las rutas, aqui 
 estan definidas todos los url de cada componente
@@ -31,8 +36,14 @@ const routes: Routes = [
     ClientesComponent,
   ],
   /*debemos registrar nuestras rutas por eso usamos
-  el RouterModule con la constante 'routes'*/
-  imports: [BrowserModule, AppRoutingModule, RouterModule.forRoot(routes)],
+  el RouterModule con la constante 'routes'
+  2° Despues del impor de http debe registrarse en los imports*/
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    AppRoutingModule,
+    RouterModule.forRoot(routes),
+  ],
   //aqui se registran clases de servicio
   providers: [ClienteService],
   bootstrap: [AppComponent],
