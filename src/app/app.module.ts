@@ -29,6 +29,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/clientes', pathMatch: 'full' },
   { path: 'directivas', component: DirectivaComponent },
   { path: 'clientes', component: ClientesComponent },
+  {path: 'clientes/form', component: FormComponent} //ruta para abrir el formulario
 ];
 @NgModule({
   //siempre se deben poner los nuevo componentes aqui
