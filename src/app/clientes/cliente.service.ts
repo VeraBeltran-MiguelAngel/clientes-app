@@ -14,7 +14,7 @@ import { map } from 'rxjs/operators';
  * 1 ° En nuestra clase de servicio debemos importar el metodo http
  * para que se muestren los clientes de forma dinamica(con el api rest)
  */
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 //esta anotacion es solo para clases de tipo servicio
 //(logica de negocio) se puede inyectar a otros componentes via inyeccion de dependencias a una clase component
@@ -25,6 +25,8 @@ export class ClienteService {
   //atributos de la clase
   // Aqui hacemos referencia a nuestro api rest
   private urlEndPoint: string = 'http://localhost:8080/api/clientes';
+  //atributo para las cabeceras (por constructor pasamos el content type)
+  private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   /**
    * 2° Inyectamos el objeto/dependencia HttpClient via constructor
@@ -32,7 +34,8 @@ export class ClienteService {
    */
   constructor(private http: HttpClient) {}
 
-  /*como usas arreglo de tipo cliente hay que importar la clase 
+  /*Metodo para listar los clientes
+  como usas arreglo de tipo cliente hay que importar la clase 
   lo que retorna el metodo tiene que ser un stream (flujo de datos) por lo tanto un observable de clientes*/
   getClientes(): Observable<Cliente[]> {
     /*tenemos que convertir el arreglo de clientes en un observable para que coincidan los tipos
@@ -52,5 +55,14 @@ export class ClienteService {
       .pipe(map((response) => response as Cliente[]));
 
       */
+  }
+
+  /**
+   * Metodo para crear el cliente
+   */
+  create(cliente: Cliente): Observable<Cliente> {
+    return this.http.post<Cliente>(this.urlEndPoint, cliente, {
+      headers: this.httpHeaders,
+    });
   }
 }
