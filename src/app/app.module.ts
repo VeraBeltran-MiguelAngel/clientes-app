@@ -16,6 +16,10 @@ import { RouterModule, Routes } from '@angular/router';
  * remoto a traves de peticiones HTTP (get,post,delete,put)
  */
 import { HttpClientModule } from '@angular/common/http';
+import { FormComponent } from './clientes/form.component';
+
+//Para poder trabajar con formularios
+import { FormsModule } from '@angular/forms';
 
 /* constante que contiene un arreglo con las rutas, aqui 
 estan definidas todos los url de cada componente
@@ -34,6 +38,7 @@ const routes: Routes = [
     FooterComponent,
     DirectivaComponent,
     ClientesComponent,
+    FormComponent,
   ],
   /*debemos registrar nuestras rutas por eso usamos
   el RouterModule con la constante 'routes'
@@ -41,6 +46,7 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     HttpClientModule,
+    FormsModule, //queda registrado el modulo para trabajar con formularios
     AppRoutingModule,
     RouterModule.forRoot(routes),
   ],

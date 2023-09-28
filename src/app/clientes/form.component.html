@@ -1,0 +1,40 @@
+<div class="card bg-dark text-white">
+  <div class="card-header">{{ titulo }}</div>
+  <div class="card-body">
+    <!--Esta directiva ngSubmit nos dirige al metodo create de la clase form.c.ts-->
+    <form (ngSubmit)="create()">
+      <!--NOMBRE-->
+      <div class="form-group row">
+        <!--que ocupe 2 columnas de las 12 disponibles en bootstrap-->
+        <label for="nombre" class="col-form-label col-sm-2">Nombre</label>
+        <div class="col-sm-6">
+          <!--ngModel directiva que va a poblar con los datos del formulario al objeto/
+          atributo cliente de la clase form.component.ts. Realiza un "Binding =Poblar/Enlazar"-->
+          <input type="text" class="form-control" [(ngModel)]="cliente.nombre" name="nombre"/>
+        </div>
+      </div>
+      <!--APELLIDO-->
+      <div class="form-group row">
+        <!--que ocupe 2 columnas de las 12 disponibles en bootstrap-->
+        <label for="apellido" class="col-form-label col-sm-2">Apellido</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" [(ngModel)]="cliente.apellido" name="apellido"/>
+        </div>
+      </div>
+      <!--EMAIL-->
+      <div class="form-group row">
+        <!--que ocupe 2 columnas de las 12 disponibles en bootstrap-->
+        <label for="email" class="col-form-label col-sm-2">Email</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" [(ngModel)]="cliente.email" name="email"/>
+        </div>
+      </div>
+      <!--BOTON CREAR-->
+      <div class="form-group row">
+        <div class="col-sm-6">
+          <button class="btn btn-primary" role="button">Crear</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
