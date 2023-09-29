@@ -68,11 +68,27 @@ export class ClienteService {
   }
 
   /**
-   * Metodo para editar el cliente
+   * Metodo para obtener los datos a editar del cliente
    * Creamos un observable de un solo cliente (un arreglo de clientes no)
    */
   getCliente(id: Cliente): Observable<Cliente> {
     //usaremos el string de interpolacion para pasar el id a la url del endpoit
     return this.http.get<Cliente>(`${this.urlEndPoint}/${id}`);
+  }
+
+  /**
+   * Metodo para actualizar los datos del cliente
+   */
+  update(cliente: Cliente): Observable<Cliente> {
+    // put se usa para actualizar datos en el servidor REST.
+    //A diferencia de POSTque es para crear, el 1° arg es la url como 2° argumento
+    //pasamos el cliente a modificar y el 3° arg son los header
+    return this.http.put<Cliente>(
+      `${this.urlEndPoint}/${cliente.id}`,
+      cliente,
+      {
+        headers: this.httpHeaders,
+      }
+    );
   }
 }

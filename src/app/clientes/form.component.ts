@@ -30,7 +30,7 @@ export class FormComponent implements OnInit {
   }
 
   /**
-   * Metodo para cargar el cliente
+   * Metodo para cargar los datos a editar del cliente
    * Void por que solo asigna la respuesta al atributo cliente
    * Obtener el id por URL (inyectar en constructor)
    */
@@ -43,6 +43,8 @@ export class FormComponent implements OnInit {
       let id = params['id'];
       //si el id existe vamos a buscar al cliente
       if (id) {
+        //cambiamos el titulo del fromulario
+        this.titulo = 'Editar Cliente';
         //suscribimos para registrar el observador que asigna el cliente de la consulta al atributo cliente
         this.clienteService
           .getCliente(id)
@@ -50,6 +52,10 @@ export class FormComponent implements OnInit {
       }
     });
   }
+
+  /**
+   * Metodo para crear un cliente
+   */
 
   public create(): void {
     /**sin implementar metodo de crear
@@ -71,5 +77,22 @@ export class FormComponent implements OnInit {
         );
       }
     );
+  }
+
+  /**
+   * Metodo Actualizar cliente
+   */
+  update(): void {
+    //procedemos a suscribir para registrar el observador
+    // despues de actualizar redirigimos al listado con un mensaje de exito
+    this.clienteService.update(this.cliente).subscribe((cliente) => {
+      this.router.navigate(['/clientes']);
+      //creamos el alert
+      swal.fire(
+        'Cliente Actualizado',
+        `Cliente ${cliente.nombre} actualizado con exito!`,
+        'success'
+      );
+    });
   }
 }

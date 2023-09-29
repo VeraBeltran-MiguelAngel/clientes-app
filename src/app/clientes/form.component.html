@@ -3,7 +3,7 @@
   <div class="card-header">{{ titulo }}</div>
   <div class="card-body">
     <!--Esta directiva ngSubmit nos dirige al metodo create de la clase form.c.ts-->
-    <form (ngSubmit)="create()">
+    <form>
       <!--NOMBRE-->
       <div class="form-group row">
         <!--que ocupe 2 columnas de las 12 disponibles en bootstrap-->
@@ -11,31 +11,60 @@
         <div class="col-sm-6">
           <!--ngModel directiva que va a poblar con los datos del formulario al objeto/
           atributo cliente de la clase form.component.ts. Realiza un "Binding =Poblar/Enlazar"-->
-          <input type="text" class="form-control" [(ngModel)]="cliente.nombre" name="nombre"/>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="cliente.nombre"
+            name="nombre"
+          />
         </div>
       </div>
       <!--APELLIDO-->
-      <br>
+      <br />
       <div class="form-group row">
         <!--que ocupe 2 columnas de las 12 disponibles en bootstrap-->
         <label for="apellido" class="col-form-label col-sm-2">Apellido</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" [(ngModel)]="cliente.apellido" name="apellido"/>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="cliente.apellido"
+            name="apellido"
+          />
         </div>
       </div>
       <!--EMAIL-->
-      <br>
+      <br />
       <div class="form-group row">
         <!--que ocupe 2 columnas de las 12 disponibles en bootstrap-->
         <label for="email" class="col-form-label col-sm-2">Email</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" [(ngModel)]="cliente.email" name="email"/>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="cliente.email"
+            name="email"
+          />
         </div>
       </div>
       <!--BOTON CREAR-->
       <div class="form-group row">
         <div class="col-sm-6">
-          <button class="btn btn-primary" role="button">Crear</button>
+          <!--directica click invoca el metodo create, evaluamos si no existe el cliente id, muestra boton crear
+          caso contrario va al template 'elseBlock' y muestra boton editar-->
+          <button
+            class="btn btn-primary"
+            role="button"
+            (click)="create()"
+            *ngIf="!cliente.id; else elseBlock"
+          >
+            Crear
+          </button>
+          <ng-template #elseBlock>
+            <button class="btn btn-primary" role="button" (click)="update()">
+              Editar
+            </button>
+          </ng-template>
         </div>
       </div>
     </form>
