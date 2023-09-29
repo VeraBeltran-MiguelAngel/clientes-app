@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Cliente } from './cliente';
 import { ClienteService } from './cliente.service';
+//libreria para alertas
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-clientes',
@@ -8,11 +10,11 @@ import { ClienteService } from './cliente.service';
 })
 export class ClientesComponent implements OnInit {
   //para poder decir que el objeto de de tipo Cliente hay que importar la clase
-  clientes: Cliente[] | undefined;
+  clientes!: Cliente[];
 
   /*tenemos que inyectar la clase de servicio con inyeccion de dependencias
   aqui se define el nombre del atributo(clienteService) y se inyecta su valor*/
-  constructor(private clienteService:ClienteService) {}
+  constructor(private clienteService: ClienteService) {}
 
   ngOnInit(): void {
     //en este metodo se ejecutan procesos al iniciar el componente
@@ -25,21 +27,62 @@ export class ClientesComponent implements OnInit {
         de clientes con los cambios.Entonces acá tenemos una función anónima nuestro Salvador 
         que se encarga de asignar el valor al cliente component*/
 
-        //clientes es el argumento (el resultado del stream), se asigna el parametro a this clientes
-         /*esta linea seria el observador , por lo tanto actualiza el listado de clientes
+      //clientes es el argumento (el resultado del stream), se asigna el parametro a this clientes
+      /*esta linea seria el observador , por lo tanto actualiza el listado de clientes
          desde el cliente component y eso se pasa a la plantilla(a la vista con los posibles cambios)*/
-        clientes => this.clientes = clientes 
-    
-        //el argumento es el valor que se emite desde el flujo reactivo que retorna el 
-        //servicio(esta en cliente.service) (Observable<Cliente[]>), 
+      (clientes) => (this.clientes = clientes)
 
-        /*function(clientes){ la funcion => es igual a esto
+      //el argumento es el valor que se emite desde el flujo reactivo que retorna el
+      //servicio(esta en cliente.service) (Observable<Cliente[]>),
+
+      /*function(clientes){ la funcion => es igual a esto
           this se usa para referenciar a la variable global o a nivel de clase
           this.clientes = clientes
         } */
-
-       
-
     );
+  }
+
+  delete(cliente: any): void {
+    //mostrar alerta de estas seguro de eliminar?
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger',
+      },
+      buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: 'Estas seguro?',
+        text: `¿Seguro que deseas eliminar al cliente: ${cliente.nombre} ${cliente.apellido}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, eliminar!',
+        cancelButtonText: 'No, cancelar!',
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          //al dar clic en si procedemos a eliminar y registramos al observador
+          this.clienteService.delete(cliente.id).subscribe((response) => {
+            //debemos quitar del listado el cliente que se elimino para que se actualice automaticamente
+            /**
+             * El metodo filter de Array nos permite filtrar solo los elementos que deseamos
+             * segun ciertos criterios y devolverlos en un nuevo array.
+             * Cada cliente se pasa por parametro si el arg cli es distinto del cliente a eliminar
+             * lo mostramos en la lista
+             */
+            this.clientes = this.clientes.filter((cli) => cli !== cliente);
+
+            //como respuesta mandamos el mensaje
+            swalWithBootstrapButtons.fire(
+              'Cliente Eliminado!',
+              `Cliente: ${cliente.nombre} eliminado con exito.`,
+              'success'
+            );
+          });
+        }
+      });
   }
 }
