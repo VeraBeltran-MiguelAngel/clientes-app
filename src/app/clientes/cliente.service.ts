@@ -15,6 +15,7 @@ import { map } from 'rxjs/operators';
  * para que se muestren los clientes de forma dinamica(con el api rest)
  */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { identifierName } from '@angular/compiler';
 
 //esta anotacion es solo para clases de tipo servicio
 //(logica de negocio) se puede inyectar a otros componentes via inyeccion de dependencias a una clase component
@@ -64,5 +65,14 @@ export class ClienteService {
     return this.http.post<Cliente>(this.urlEndPoint, cliente, {
       headers: this.httpHeaders,
     });
+  }
+
+  /**
+   * Metodo para editar el cliente
+   * Creamos un observable de un solo cliente (un arreglo de clientes no)
+   */
+  getCliente(id: Cliente): Observable<Cliente> {
+    //usaremos el string de interpolacion para pasar el id a la url del endpoit
+    return this.http.get<Cliente>(`${this.urlEndPoint}/${id}`);
   }
 }

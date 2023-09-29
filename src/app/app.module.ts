@@ -28,8 +28,9 @@ es el home y redirige a clientes y hace match completo con la url*/
 const routes: Routes = [
   { path: '', redirectTo: '/clientes', pathMatch: 'full' },
   { path: 'directivas', component: DirectivaComponent },
-  { path: 'clientes', component: ClientesComponent },
-  {path: 'clientes/form', component: FormComponent} //ruta para abrir el formulario
+  { path: 'clientes', component: ClientesComponent },//listado de clientes
+  {path: 'clientes/form', component: FormComponent},//ruta para abrir el formulario crear
+  {path: 'clientes/form/:id', component: FormComponent} //formulario editar
 ];
 @NgModule({
   //siempre se deben poner los nuevo componentes aqui
