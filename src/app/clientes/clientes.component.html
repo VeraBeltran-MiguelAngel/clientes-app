@@ -15,7 +15,17 @@
       </button>
     </div>
 
-    <table class="table table bordered table-striped">
+    <!--Cuando no hay registros de clientes muestra mensaje de no hay registros-->
+    <div *ngIf="clientes!.length == 0" class="alert alert-info">
+      No hay registrons en la BD!
+    </div>
+    
+    <!--Cuando existan registros en la BD muestra la tabla
+    usamos el signo '!' para indicar que la variable puede ser nula o indefinida-->
+    <table
+      class="table table bordered table-striped"
+      *ngIf="clientes!.length > 0"
+    >
       <thead>
         <tr>
           <th>ID</th>
@@ -47,7 +57,14 @@
             </button>
           </td>
           <td>
-            <button type="button" name="eliminar" (click)='delete(cliente)' class="btn btn-danger btn-sm">Eliminar</button>
+            <button
+              type="button"
+              name="eliminar"
+              (click)="delete(cliente)"
+              class="btn btn-danger btn-sm"
+            >
+              Eliminar
+            </button>
           </td>
         </tr>
       </tbody>
