@@ -1,15 +1,10 @@
-
-<html lang="en">
-<body>
-  <!--Nuevo componente-->
-  <app-header></app-header>
-
-  <div class="container">
-    <!--Directiva especial de angular para cargar las rutas
+<!--Nuevo componente-->
+<app-header></app-header>
+<!--Usamos una clase personalizada 'wrap' para poder separar el contenido del footer-->
+<div class="container my-3 wrap">
+  <!--Directiva especial de angular para cargar las rutas
   Indica donde se va a renderizar y mostrar el contenidode cada ruta-->
-    <router-outlet></router-outlet>
-  </div>
+  <router-outlet></router-outlet>
+</div>
 
-  <app-footer></app-footer>
-</body>
-</html>
+<app-footer></app-footer>

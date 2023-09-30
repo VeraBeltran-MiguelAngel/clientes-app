@@ -94,8 +94,12 @@ export class ClienteService {
 
   /**
    * Metodo para eleiminar cliente
+   * (se decide usar unknown en vez de number)
+   * unknown es un tipo más seguro que any. Representa un valor cuyo tipo no se conoce 
+   * en tiempo de compilación, pero el compilador TypeScript requiere que realices una 
+   * comprobación de tipo antes de realizar operaciones en él.
    */
-  delete(id: number): Observable<Cliente> {
+  delete(id: unknown): Observable<Cliente> {
     return this.http.delete<Cliente>(`${this.urlEndPoint}/${id}`, {
       headers: this.httpHeaders,
     });

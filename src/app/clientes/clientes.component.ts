@@ -9,7 +9,12 @@ import Swal from 'sweetalert2';
   templateUrl: './clientes.component.html',
 })
 export class ClientesComponent implements OnInit {
-  //para poder decir que el objeto de de tipo Cliente hay que importar la clase
+  //para poder decir que el objeto es de tipo Cliente hay que importar la clase
+  /**
+   * El signo de exclamación ! es una notación de "postfijo de no nulo". Indica que esta 
+   * variable puede ser nula (null) o indefinida (undefined) en tiempo de compilación, 
+   * pero el código garantiza que, en tiempo de ejecución, esta variable tendrá un valor válido
+   */
   clientes!: Cliente[];
 
   /*tenemos que inyectar la clase de servicio con inyeccion de dependencias
@@ -42,7 +47,7 @@ export class ClientesComponent implements OnInit {
     );
   }
 
-  delete(cliente: any): void {
+  delete(cliente: Cliente): void {
     //mostrar alerta de estas seguro de eliminar?
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {

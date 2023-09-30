@@ -1,5 +1,5 @@
 .footer{
-    position: static;
+    position: absolute;
     bottom: 0px; /*para que el footer aparezca hasta abajo*/
     height: 60px;
     width: 100%; /*para que abarque todo el ancho de la pantalla*/

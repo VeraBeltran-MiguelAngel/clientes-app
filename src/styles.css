@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+
+/*para que el footer siiempre este al fondo de la pagina*/
+html{
+    position: relative;
+    min-height: 100%;
+}
+
+body{
+    margin-bottom: 60px; /*debe coincidir con el height del footer*/
+}
+
+/*aqui esditamos nuestra clase personalizada wrap del app.c.html*/
+.wrap{
+    padding-bottom: 60px;
+}
