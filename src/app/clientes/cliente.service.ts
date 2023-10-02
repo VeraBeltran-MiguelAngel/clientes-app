@@ -3,12 +3,14 @@ import { Injectable } from '@angular/core';
 //import { CLIENTES } from './clientes.json';
 import { Cliente } from './cliente';
 //para poder manejar peticiones en tiempo real (asincrono)
-import { Observable } from 'rxjs';
+//throwErro para poner el error en un observable
+import { Observable, throwError } from 'rxjs';
 // el metodo of es para crear el flujo observable
 //import { of } from 'rxjs';
 
-//para la 2° forma de mostrar la lista de clientes
-import { map } from 'rxjs/operators';
+//para la 2° forma de mostrar la lista de clientes, catch puede
+//interceptar el observable para buscar fallas
+import { map, catchError } from 'rxjs/operators';
 
 /**
  * 1 ° En nuestra clase de servicio debemos importar el metodo http
@@ -16,6 +18,8 @@ import { map } from 'rxjs/operators';
  */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { identifierName } from '@angular/compiler';
+import swal from 'sweetalert2';
+import { Router } from '@angular/router'; //para redirigir paginas
 
 //esta anotacion es solo para clases de tipo servicio
 //(logica de negocio) se puede inyectar a otros componentes via inyeccion de dependencias a una clase component
@@ -32,8 +36,9 @@ export class ClienteService {
   /**
    * 2° Inyectamos el objeto/dependencia HttpClient via constructor
    * Para eso creamos la variable 'http' que es de tipo HttpClient
+   * tambien el router para redirigir a otra pagina
    */
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   /*Metodo para listar los clientes
   como usas arreglo de tipo cliente hay que importar la clase 
@@ -73,7 +78,17 @@ export class ClienteService {
    */
   getCliente(id: Cliente): Observable<Cliente> {
     //usaremos el string de interpolacion para pasar el id a la url del endpoit
-    return this.http.get<Cliente>(`${this.urlEndPoint}/${id}`);
+    return this.http.get<Cliente>(`${this.urlEndPoint}/${id}`).pipe(
+      catchError((e) => {
+        this.router.navigate(['/clientes']);
+        console.error(e.error.mensaje);
+        //manejamos el error a traves del estado del estatus de la respuesta, usamos
+        //la variable mensaje que esta en el map del backend
+        swal.fire('Error al editar', e.error.mensaje, 'error');
+        //tenemos que retornar el lanzamiento del error en un observable
+        return throwError(() => e);
+      })
+    );
   }
 
   /**
@@ -95,8 +110,8 @@ export class ClienteService {
   /**
    * Metodo para eleiminar cliente
    * (se decide usar unknown en vez de number)
-   * unknown es un tipo más seguro que any. Representa un valor cuyo tipo no se conoce 
-   * en tiempo de compilación, pero el compilador TypeScript requiere que realices una 
+   * unknown es un tipo más seguro que any. Representa un valor cuyo tipo no se conoce
+   * en tiempo de compilación, pero el compilador TypeScript requiere que realices una
    * comprobación de tipo antes de realizar operaciones en él.
    */
   delete(id: unknown): Observable<Cliente> {
