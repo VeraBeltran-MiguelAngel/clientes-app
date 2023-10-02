@@ -1,21 +1,37 @@
 <div class="card bg-dark text-white">
   <div class="card-header">{{ titulo }}</div>
   <div class="card-body">
-    <!--Esta directiva ngSubmit nos dirige al metodo create de la clase form.c.ts-->
-    <form>
+    <!--variable global con objeto ngForm para saver si el formulario es valido
+    es decir no debe tener ningun error para guardar-->
+    <form #clienteForm="ngForm">
       <!--NOMBRE-->
       <div class="form-group row">
         <!--que ocupe 2 columnas de las 12 disponibles en bootstrap-->
         <label for="nombre" class="col-form-label col-sm-2">Nombre</label>
         <div class="col-sm-6">
           <!--ngModel directiva que va a poblar con los datos del formulario al objeto/
-          atributo cliente de la clase form.component.ts. Realiza un "Binding =Poblar/Enlazar"-->
+          atributo cliente de la clase form.component.ts. Realiza un "Binding =Poblar/Enlazar"
+          2° creamos variable nombre para signar el objeto ngModel que contiene los mensajes de error-->
           <input
             type="text"
             class="form-control"
             [(ngModel)]="cliente.nombre"
             name="nombre"
+            required
+            minlength="4"
+            #nombre="ngModel"
           />
+          <!--DIV principal que pregunta si hay errores, muestra el error a medida 
+            que vayas escribiendo (dirty) o si ya escribiste y te saliste del textbox (touched)-->
+          <div
+            class="alert alert-danger"
+            *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)"
+          >
+            <div *ngIf="nombre.errors?.['required']">Nombre es requerido</div>
+            <div *ngIf="nombre.errors?.['minlength']">
+              Nombre debe tener al menos 4 caracteres
+            </div>
+          </div>
         </div>
       </div>
       <!--APELLIDO-->
@@ -29,7 +45,19 @@
             class="form-control"
             [(ngModel)]="cliente.apellido"
             name="apellido"
+            required
+            #apellido="ngModel"
           />
+          <!--DIV principal que pregunta si hay errores, muestra el error a medida 
+            que vayas escribiendo (dirty) o si ya escribiste y te saliste del textbox (touched)-->
+          <div
+            class="alert alert-danger"
+            *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)"
+          >
+            <div *ngIf="apellido.errors?.['required']">
+              Apellido es requerido
+            </div>
+          </div>
         </div>
       </div>
       <!--EMAIL-->
@@ -38,29 +66,52 @@
         <!--que ocupe 2 columnas de las 12 disponibles en bootstrap-->
         <label for="email" class="col-form-label col-sm-2">Email</label>
         <div class="col-sm-6">
+          <!--validamos que sea requerido y que tenga el formato correcto con 'email'-->
           <input
             type="text"
             class="form-control"
             [(ngModel)]="cliente.email"
             name="email"
+            required
+            email
+            #email="ngModel"
           />
+          <!--DIV principal que pregunta si hay errores, muestra el error a medida 
+            que vayas escribiendo (dirty) o si ya escribiste y te saliste del textbox (touched)-->
+          <div
+            class="alert alert-danger"
+            *ngIf="email.invalid && (email.dirty || email.touched)"
+          >
+            <div *ngIf="email.errors?.['required']">Email es requerido</div>
+            <div *ngIf="email.errors?.['email']">
+              Email debe tener un formato valido
+            </div>
+          </div>
         </div>
       </div>
       <!--BOTON CREAR-->
       <div class="form-group row">
         <div class="col-sm-6">
           <!--directica click invoca el metodo create, evaluamos si no existe el cliente id, muestra boton crear
-          caso contrario va al template 'elseBlock' y muestra boton editar-->
+          caso contrario va al template 'elseBlock' y muestra boton editar
+        2° disabled inactiva el boton si el formulario tiene errores-->
           <button
             class="btn btn-primary"
             role="button"
             (click)="create()"
             *ngIf="!cliente.id; else elseBlock"
+            [disabled]="!clienteForm.form.valid"
           >
             Crear
           </button>
+          <!--Boton editar, si tiene errores el formulario desactiva el boton-->
           <ng-template #elseBlock>
-            <button class="btn btn-primary" role="button" (click)="update()">
+            <button
+              class="btn btn-primary"
+              role="button"
+              (click)="update()"
+              [disabled]="!clienteForm.form.valid"
+            >
               Editar
             </button>
           </ng-template>
