@@ -62,17 +62,18 @@ export class FormComponent implements OnInit {
      *console.log('Clic');
      *console.log(this.cliente);
      */
-
     //llamando al metodo crear(pasamos el objeto cliente y lo vamos a suscribir)
     this.clienteService.create(this.cliente).subscribe(
       //para redirigir al listado de clientes y mostrar el nuevo registro,
       // y mostrar un mensaje de confirmacion de cliente creado
-      (cliente) => {
+      // funcion flecha con parametro (este parametro es de cualquier tipo) para 
+      //tener acceso al atributo cliente que se envia en el MAP del backend
+      (json ) => {
         this.router.navigate(['/clientes']);
         //creamos el alert con tres parametros (titulo,`mensaje`,tipo de mensaje)
         swal.fire(
           'Nuevo Cliente',
-          `Cliente: ${cliente.nombre} creado con exito!`,
+          `${json.mensaje}: ${json.cliente.nombre}`,
           'success'
         );
       }

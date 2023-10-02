@@ -65,10 +65,12 @@ export class ClienteService {
 
   /**
    * Metodo para crear el cliente
+   * @param cliente
+   * @returns observable de tipo any ya que en el back estamos retornando un Map y no un objeto cliente
    */
-  create(cliente: Cliente): Observable<Cliente> {
+  create(cliente: Cliente): Observable<any> {
     return this.http
-      .post<Cliente>(this.urlEndPoint, cliente, {
+      .post<any>(this.urlEndPoint, cliente, {
         headers: this.httpHeaders,
       })
       .pipe(
@@ -103,16 +105,22 @@ export class ClienteService {
 
   /**
    * Metodo para actualizar los datos del cliente
+   * @param cliente
+   * @returns observable de tipo cliente dbemos transformar la respuesta de forma manual sin el cast
+   * usando el map
    */
   update(cliente: Cliente): Observable<Cliente> {
     // put se usa para actualizar datos en el servidor REST.
     //A diferencia de POSTque es para crear, el 1° arg es la url como 2° argumento
     //pasamos el cliente a modificar y el 3° arg son los header
     return this.http
-      .put<Cliente>(`${this.urlEndPoint}/${cliente.id}`, cliente, {
+      .put(`${this.urlEndPoint}/${cliente.id}`, cliente, {
         headers: this.httpHeaders,
       })
       .pipe(
+        /*el parametro response es generico para poder tener acceso al MAP que viene del backend
+        hacemos referencia al atributo cliente de ese MAP que en el fondo es un json */
+        map((response: any) => response.cliente as Cliente),
         catchError((e) => {
           console.error(e.error.mensaje);
           //mostrar error al usuario(usamos id del map del back)
