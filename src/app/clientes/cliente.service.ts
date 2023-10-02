@@ -67,9 +67,19 @@ export class ClienteService {
    * Metodo para crear el cliente
    */
   create(cliente: Cliente): Observable<Cliente> {
-    return this.http.post<Cliente>(this.urlEndPoint, cliente, {
-      headers: this.httpHeaders,
-    });
+    return this.http
+      .post<Cliente>(this.urlEndPoint, cliente, {
+        headers: this.httpHeaders,
+      })
+      .pipe(
+        catchError((e) => {
+          console.error(e.error.mensaje);
+          //mostrar error al usuario(usamos id del map del back)
+          swal.fire(e.error.mensaje, e.error.error, 'error');
+          //retornar el objeto de error convertido a observable para mantener el mismo tipo del metodo create
+          return throwError(() => e);
+        })
+      );
   }
 
   /**
@@ -98,13 +108,19 @@ export class ClienteService {
     // put se usa para actualizar datos en el servidor REST.
     //A diferencia de POSTque es para crear, el 1° arg es la url como 2° argumento
     //pasamos el cliente a modificar y el 3° arg son los header
-    return this.http.put<Cliente>(
-      `${this.urlEndPoint}/${cliente.id}`,
-      cliente,
-      {
+    return this.http
+      .put<Cliente>(`${this.urlEndPoint}/${cliente.id}`, cliente, {
         headers: this.httpHeaders,
-      }
-    );
+      })
+      .pipe(
+        catchError((e) => {
+          console.error(e.error.mensaje);
+          //mostrar error al usuario(usamos id del map del back)
+          swal.fire(e.error.mensaje, e.error.error, 'error');
+          //retornar el objeto de error convertido a observable para mantener el mismo tipo del metodo create
+          return throwError(() => e);
+        })
+      );
   }
 
   /**
@@ -115,8 +131,18 @@ export class ClienteService {
    * comprobación de tipo antes de realizar operaciones en él.
    */
   delete(id: unknown): Observable<Cliente> {
-    return this.http.delete<Cliente>(`${this.urlEndPoint}/${id}`, {
-      headers: this.httpHeaders,
-    });
+    return this.http
+      .delete<Cliente>(`${this.urlEndPoint}/${id}`, {
+        headers: this.httpHeaders,
+      })
+      .pipe(
+        catchError((e) => {
+          console.error(e.error.mensaje);
+          //mostrar error al usuario(usamos id del map del back)
+          swal.fire(e.error.mensaje, e.error.error, 'error');
+          //retornar el objeto de error convertido a observable para mantener el mismo tipo del metodo create
+          return throwError(() => e);
+        })
+      );
   }
 }
