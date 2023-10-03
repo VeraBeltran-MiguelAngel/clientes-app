@@ -75,6 +75,11 @@ export class ClienteService {
       })
       .pipe(
         catchError((e) => {
+          //*manejar las validaciones del backend (bad request) (varios errores)
+          if (e.status==400) {
+            //retornamos el error para que el componente se encargue de controlar el error en el suscribe
+            return throwError(() => e);
+          }
           console.error(e.error.mensaje);
           //mostrar error al usuario(usamos id del map del back)
           swal.fire(e.error.mensaje, e.error.error, 'error');
@@ -122,6 +127,11 @@ export class ClienteService {
         hacemos referencia al atributo cliente de ese MAP que en el fondo es un json */
         map((response: any) => response.cliente as Cliente),
         catchError((e) => {
+          //*manejar las validaciones del backend (bad request) (varios errores)
+          if (e.status==400) {
+            //retornamos el error para que el componente se encargue de controlar el error en el suscribe
+            return throwError(() => e);
+          }
           console.error(e.error.mensaje);
           //mostrar error al usuario(usamos id del map del back)
           swal.fire(e.error.mensaje, e.error.error, 'error');
