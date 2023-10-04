@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+//usamos dos formas de dar formato a la fecha del backend
+import { formatDate, DatePipe } from '@angular/common';
 //usaremos la constante declarada en el json(arreglo de clientes) forma estatica
 //import { CLIENTES } from './clientes.json';
 import { Cliente } from './cliente';
@@ -48,14 +50,12 @@ export class ClienteService {
     Convertimos / creamos nuestro flujo observable a partir de los objetos clientes
     return of(CLIENTES);
     */
-
     // 1° forma de obtener el listado de clientes del back (retorna un observable de tipo generico)
     // debes hacer un cast para que sea de tipo cliente
     // return this.http.get<Cliente[]>(this.urlEndPoint);
 
     /**
      * Para la 2° forma */
-
     return this.http
       .get(this.urlEndPoint) //argumento => return
       .pipe(
@@ -64,9 +64,19 @@ export class ClienteService {
           //variable local dentro del metodo se daclaran como let
           let varArrayClientes = response as Cliente[];
           //el operador map(modificamos cada elemento del array) debe retornar el objeto modificado
-          return varArrayClientes.map((paramCliente) => {
+          return varArrayClientes.map((paramCliente:any) => {
             //por cada nombre lo hacemos mayuscula
             paramCliente.nombre = paramCliente.nombre?.toUpperCase();
+
+            //modificar formato de fecha 1° forma
+            // paramCliente.createAt = formatDate(paramCliente.createAt,'dd-MM-yyyy','en-US');
+
+            //modificar fecha 2° forma
+            let datePipe = new DatePipe('en-Us');
+            paramCliente.createAt = datePipe.transform(
+              paramCliente.createAt,
+              'dd/MM/yyyy'
+            );
             //para que haga efecto el map retornamos el objeto modificado
             return paramCliente;
           });
