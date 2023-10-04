@@ -74,10 +74,10 @@ export class ClienteService {
 
             //modificar fecha 2° forma
             let datePipe = new DatePipe('es');
-            paramCliente.createAt = datePipe.transform(
-              paramCliente.createAt,
-              'EEEE dd, MMMM yyyy'
-            );
+            // paramCliente.createAt = datePipe.transform(
+            //   paramCliente.createAt,
+            //   'EEEE dd, MMMM yyyy'
+            // );
             //para que haga efecto el map retornamos el objeto modificado
             return paramCliente;
           });

@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+//locale ID para usar formato de fechas en html y se vea en español
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -59,8 +60,8 @@ const routes: Routes = [
     AppRoutingModule,
     RouterModule.forRoot(routes),
   ],
-  //aqui se registran clases de servicio
-  providers: [ClienteService],
+  //aqui se registran clases de servicio, y la variable locale para ver en español formatos de fecha en html
+  providers: [ClienteService, { provide: LOCALE_ID, useValue: 'es' }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
