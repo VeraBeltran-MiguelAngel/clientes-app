@@ -1,9 +1,10 @@
-<div class="card bg-dark text-white">
+<div class="card bg-dark text-white" > 
   <div class="card-header">{{ titulo }}</div>
+
   <div class="card-body">
     <!--variable global con objeto ngForm para saver si el formulario es valido
     es decir no debe tener ningun error para guardar-->
-    <form #clienteForm="ngForm">
+    <form>
       <!--NOMBRE-->
       <div class="form-group row">
         <!--que ocupe 2 columnas de las 12 disponibles en bootstrap-->
@@ -17,23 +18,10 @@
             class="form-control"
             [(ngModel)]="cliente.nombre"
             name="nombre"
-            required
-            minlength="4"
-            #nombre="ngModel"
           />
-          <!--DIV principal que pregunta si hay errores, muestra el error a medida 
-            que vayas escribiendo (dirty) o si ya escribiste y te saliste del textbox (touched)-->
-          <div
-            class="alert alert-danger"
-            *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)"
-          >
-            <div *ngIf="nombre.errors?.['required']">Nombre es requerido</div>
-            <div *ngIf="nombre.errors?.['minlength']">
-              Nombre debe tener al menos 4 caracteres
-            </div>
-          </div>
         </div>
       </div>
+
       <!--APELLIDO-->
       <br />
       <div class="form-group row">
@@ -45,21 +33,11 @@
             class="form-control"
             [(ngModel)]="cliente.apellido"
             name="apellido"
-            required
             #apellido="ngModel"
           />
-          <!--DIV principal que pregunta si hay errores, muestra el error a medida 
-            que vayas escribiendo (dirty) o si ya escribiste y te saliste del textbox (touched)-->
-          <div
-            class="alert alert-danger"
-            *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)"
-          >
-            <div *ngIf="apellido.errors?.['required']">
-              Apellido es requerido
-            </div>
-          </div>
         </div>
       </div>
+
       <!--EMAIL-->
       <br />
       <div class="form-group row">
@@ -72,23 +50,10 @@
             class="form-control"
             [(ngModel)]="cliente.email"
             name="email"
-            required
-            email
-            #email="ngModel"
           />
-          <!--DIV principal que pregunta si hay errores, muestra el error a medida 
-            que vayas escribiendo (dirty) o si ya escribiste y te saliste del textbox (touched)-->
-          <div
-            class="alert alert-danger"
-            *ngIf="email.invalid && (email.dirty || email.touched)"
-          >
-            <div *ngIf="email.errors?.['required']">Email es requerido</div>
-            <div *ngIf="email.errors?.['email']">
-              Email debe tener un formato valido
-            </div>
-          </div>
         </div>
       </div>
+      <br />
       <!--BOTON CREAR-->
       <div class="form-group row">
         <div class="col-sm-6">
@@ -100,23 +65,26 @@
             role="button"
             (click)="create()"
             *ngIf="!cliente.id; else elseBlock"
-            [disabled]="!clienteForm.form.valid"
           >
             Crear
           </button>
           <!--Boton editar, si tiene errores el formulario desactiva el boton-->
           <ng-template #elseBlock>
-            <button
-              class="btn btn-primary"
-              role="button"
-              (click)="update()"
-              [disabled]="!clienteForm.form.valid"
-            >
+            <button class="btn btn-primary" role="button" (click)="update()">
               Editar
             </button>
           </ng-template>
         </div>
       </div>
+      <br />
+      <!--Creamos un contenedor para mostrar los mensajes de error hasta arriba
+'errores' es el atributo de from.c.ts , validamos que exista al menos un error
+para mostrar el contenedor-->
+      <ul class="alert alert-danger" *ngIf="errores.length > 0">
+        <li *ngFor="let itErr of errores">
+          {{ itErr }}
+        </li>
+      </ul>
     </form>
   </div>
 </div>
