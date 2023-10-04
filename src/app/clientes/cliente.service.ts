@@ -51,16 +51,27 @@ export class ClienteService {
 
     // 1° forma de obtener el listado de clientes del back (retorna un observable de tipo generico)
     // debes hacer un cast para que sea de tipo cliente
-    return this.http.get<Cliente[]>(this.urlEndPoint);
+    // return this.http.get<Cliente[]>(this.urlEndPoint);
 
     /**
-     * Para la 2° forma
-     
+     * Para la 2° forma */
+
     return this.http
       .get(this.urlEndPoint) //argumento => return
-      .pipe(map((response) => response as Cliente[]));
-
-      */
+      .pipe(
+        //metodo map del observable (modifica el flujo (listado clientes))
+        map((response) => {
+          //variable local dentro del metodo se daclaran como let
+          let varArrayClientes = response as Cliente[];
+          //el operador map(modificamos cada elemento del array) debe retornar el objeto modificado
+          return varArrayClientes.map((paramCliente) => {
+            //por cada nombre lo hacemos mayuscula
+            paramCliente.nombre = paramCliente.nombre?.toUpperCase();
+            //para que haga efecto el map retornamos el objeto modificado
+            return paramCliente;
+          });
+        })
+      );
   }
 
   /**
@@ -76,7 +87,7 @@ export class ClienteService {
       .pipe(
         catchError((e) => {
           //*manejar las validaciones del backend (bad request) (varios errores)
-          if (e.status==400) {
+          if (e.status == 400) {
             //retornamos el error para que el componente se encargue de controlar el error en el suscribe
             return throwError(() => e);
           }
@@ -128,7 +139,7 @@ export class ClienteService {
         map((response: any) => response.cliente as Cliente),
         catchError((e) => {
           //*manejar las validaciones del backend (bad request) (varios errores)
-          if (e.status==400) {
+          if (e.status == 400) {
             //retornamos el error para que el componente se encargue de controlar el error en el suscribe
             return throwError(() => e);
           }
