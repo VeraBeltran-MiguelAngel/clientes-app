@@ -20,6 +20,13 @@ import { FormComponent } from './clientes/form.component';
 
 //Para poder trabajar con formularios
 import { FormsModule } from '@angular/forms';
+//usamos dos formas de dar formato a la fecha del backend
+import { registerLocaleData } from '@angular/common';
+//importar nuestro locale español para que no se ve en ingles las fechas
+import localeEs from '@angular/common/locales/es-MX';
+
+//hay que registrar la hora local en español
+registerLocaleData(localeEs, 'es');
 
 /* constante que contiene un arreglo con las rutas, aqui 
 estan definidas todos los url de cada componente
@@ -28,9 +35,9 @@ es el home y redirige a clientes y hace match completo con la url*/
 const routes: Routes = [
   { path: '', redirectTo: '/clientes', pathMatch: 'full' },
   { path: 'directivas', component: DirectivaComponent },
-  { path: 'clientes', component: ClientesComponent },//listado de clientes
-  {path: 'clientes/form', component: FormComponent},//ruta para abrir el formulario crear
-  {path: 'clientes/form/:id', component: FormComponent} //formulario editar
+  { path: 'clientes', component: ClientesComponent }, //listado de clientes
+  { path: 'clientes/form', component: FormComponent }, //ruta para abrir el formulario crear
+  { path: 'clientes/form/:id', component: FormComponent }, //formulario editar
 ];
 @NgModule({
   //siempre se deben poner los nuevo componentes aqui
