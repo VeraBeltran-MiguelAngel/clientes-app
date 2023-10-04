@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 //usamos dos formas de dar formato a la fecha del backend
-import { formatDate, DatePipe} from '@angular/common';
+import { formatDate, DatePipe } from '@angular/common';
 
 //usaremos la constante declarada en el json(arreglo de clientes) forma estatica
 //import { CLIENTES } from './clientes.json';
@@ -13,7 +13,7 @@ import { Observable, throwError } from 'rxjs';
 
 //para la 2° forma de mostrar la lista de clientes, catch puede
 //interceptar el observable para buscar fallas
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, tap } from 'rxjs/operators';
 
 /**
  * 1 ° En nuestra clase de servicio debemos importar el metodo http
@@ -60,6 +60,16 @@ export class ClienteService {
     return this.http
       .get(this.urlEndPoint) //argumento => return
       .pipe(
+        //paramResponse de tipo Object
+        tap((paramResponse) => {
+          //este tap no cambia el flujo solo muestra en consola
+          let varArrayTapClientes = paramResponse as Cliente[];
+          console.log('ClienteService: tap 1');
+          varArrayTapClientes.forEach((itemCliente) => {
+            //mostramos datos de cada cliente en el log
+            console.log(itemCliente.nombre);
+          });
+        }),
         //metodo map del observable (modifica el flujo (listado clientes))
         map((response) => {
           //variable local dentro del metodo se daclaran como let
@@ -80,6 +90,14 @@ export class ClienteService {
             // );
             //para que haga efecto el map retornamos el objeto modificado
             return paramCliente;
+          });
+        }),
+        //aqui el paramResponse ya es de tipo cliente por que el map lo transformo
+        tap((paramTapResponse) => {
+          console.log('ClienteService: tap 2');
+          paramTapResponse.forEach((itemCliente) => {
+            //mostramos datos de cada cliente en el log
+            console.log(itemCliente.nombre);
           });
         })
       );
@@ -164,7 +182,7 @@ export class ClienteService {
   }
 
   /**
-   * Metodo para eleiminar cliente
+   * Metodo para eliminar cliente
    * (se decide usar unknown en vez de number)
    * unknown es un tipo más seguro que any. Representa un valor cuyo tipo no se conoce
    * en tiempo de compilación, pero el compilador TypeScript requiere que realices una

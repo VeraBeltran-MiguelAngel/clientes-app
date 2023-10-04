@@ -4,6 +4,8 @@ import { ClienteService } from './cliente.service';
 //libreria para alertas
 import Swal from 'sweetalert2';
 
+import { tap } from 'rxjs/operators';
+
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.component.html',
@@ -11,8 +13,8 @@ import Swal from 'sweetalert2';
 export class ClientesComponent implements OnInit {
   //para poder decir que el objeto es de tipo Cliente hay que importar la clase
   /**
-   * El signo de exclamación ! es una notación de "postfijo de no nulo". Indica que esta 
-   * variable puede ser nula (null) o indefinida (undefined) en tiempo de compilación, 
+   * El signo de exclamación ! es una notación de "postfijo de no nulo". Indica que esta
+   * variable puede ser nula (null) o indefinida (undefined) en tiempo de compilación,
    * pero el código garantiza que, en tiempo de ejecución, esta variable tendrá un valor válido
    */
   clientes!: Cliente[];
@@ -26,25 +28,37 @@ export class ClientesComponent implements OnInit {
 
     /*Tenemos que suscribir o registrar el observador a nuestros clientes.
     Por lo tanto getClientes() es un observable (observado por observadores)*/
-    this.clienteService.getClientes().subscribe(
-      /*dentro de este metodo (suscribir) el observador justamente sería asignar en el atributo
+    //*aqui el pipe recibe un clientes de tipo array por que ya fue transformado en cliente.service
+    this.clienteService
+      .getClientes()
+      .pipe(
+        tap((paramClientes) => {
+          console.log('ClienteService: tap 3');
+          paramClientes.forEach((itemCliente) => {
+            //mostramos datos de cada cliente en el log
+            console.log(itemCliente.nombre);
+          });
+        })
+      )
+      .subscribe(
+        /*dentro de este metodo (suscribir) el observador justamente sería asignar en el atributo
         clientes el valor que se está recibiendo desde el clienteService que sería el listado 
         de clientes con los cambios.Entonces acá tenemos una función anónima nuestro Salvador 
         que se encarga de asignar el valor al cliente component*/
 
-      //clientes es el argumento (el resultado del stream), se asigna el parametro a this clientes
-      /*esta linea seria el observador , por lo tanto actualiza el listado de clientes
+        //clientes es el argumento (el resultado del stream), se asigna el parametro a this clientes
+        /*esta linea seria el observador , por lo tanto actualiza el listado de clientes
          desde el cliente component y eso se pasa a la plantilla(a la vista con los posibles cambios)*/
-      (clientes) => (this.clientes = clientes)
+        (clientes) => (this.clientes = clientes)
 
-      //el argumento es el valor que se emite desde el flujo reactivo que retorna el
-      //servicio(esta en cliente.service) (Observable<Cliente[]>),
+        //el argumento es el valor que se emite desde el flujo reactivo que retorna el
+        //servicio(esta en cliente.service) (Observable<Cliente[]>),
 
-      /*function(clientes){ la funcion => es igual a esto
+        /*function(clientes){ la funcion => es igual a esto
           this se usa para referenciar a la variable global o a nivel de clase
           this.clientes = clientes
         } */
-    );
+      );
   }
 
   delete(cliente: Cliente): void {
